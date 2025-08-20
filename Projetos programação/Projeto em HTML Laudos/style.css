@@ -1,0 +1,24 @@
+
+    :root { --brand:#0078d7; }
+    *{box-sizing:border-box}
+    body{font-family:Arial,Helvetica,sans-serif;margin:0;background:#f4f4f9;color:#333}
+    header{background:var(--brand);color:#fff;padding:16px;text-align:center}
+    main{max-width:1000px;margin:20px auto;background:#fff;padding:20px;border-radius:10px;box-shadow:0 8px 20px rgba(0,0,0,.06)}
+    .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .grid-2{grid-template-columns:repeat(2,1fr)}
+    .grid-3{grid-template-columns:repeat(3,1fr)}
+    .grid-1{grid-template-columns:1fr}
+    label{font-weight:600;font-size:12px;margin-bottom:4px;display:block}
+    input,select,textarea{width:100%;padding:10px;border:1px solid #d7d7d7;border-radius:8px;background:#fafafa}
+    textarea{min-height:70px;resize:vertical}
+    .section{margin-top:18px;padding:16px;border:1px solid #eee;border-radius:10px;background:#fcfcfe}
+    .section h3{margin:0 0 12px 0;font-size:16px;color:#222}
+    .tests ul{list-style:none;padding:0;margin:0}
+    .tests li{display:flex;align-items:center;gap:12px;justify-content:space-between;padding:8px 0;border-bottom:1px dashed #eee}
+    .tests li:last-child{border-bottom:0}
+    .badge{display:inline-block;padding:4px 8px;border-radius:999px;background:#eef5ff;color:#144a8b;font-size:12px}
+    .actions{display:flex;gap:12px;margin-top:18px}
+    button{cursor:pointer;border:0;padding:12px 16px;border-radius:10px;background:var(--brand);color:#fff;font-weight:700}
+    .muted{background:#e9eef6;color:#234}
+    .hint{font-size:12px;color:#666;margin-top:6px}
+ 

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <img src="C:\Users\Meduardo\Desktop\Projeto em HTML Laudos\logo.jpg" alt="Logotipo da Empresa" class="logo" width="1510px">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+ 
+ 
+  <title>Laudos Técnicos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f9;
+      color: #333;
+    }
+    header {
+      background: #0078d7;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    header img.logo {
+      width: 1200;
+      height: auto;
+      position: absolute;
+      top: 10px;
+      left: 20px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2em;
+    }
+
+    header p {
+      font-size: 1.2em;
+      margin: 5px 0 0;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 20px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 1px;
+    }
+
+    select, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .tests {
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+
+    .tests h3 {
+      margin-top: 0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px;
+      margin-top: 20px;
+      background: #0078d7;
+      color: #fff;
+      border-radius: 0 0 8px 8px;
+    }
+
+    /* Alterar o tamanho da fonte da label. */
+    label span {
+      font-size: 14px; /* Ajuste o valor conforme necessário */
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Laudos Técnicos</h1>
+    <p>Selecione o equipamento e veja os testes correspondentes</p>
+  </header>
+  <main>
+    <label for="equipment">Modelo do Equipamento:</label>
+    <select id="equipment">
+      <option value="">Selecione um modelo</option>
+      <option value="datalogger">Testo 174-175-177 - Rev.01 </option>
+      <option value="oleo">Testo 270 - Rev.01 </option>
+      <option value="analisador">Testo 310</option>
+      <option value="analisador340">Testo 340</option>
+    </select>
+    <div class="tests" id="tests">
+      <h3>Testes a serem realizados:</h3>
+      <ul id="test-list">
+        <li>Selecione um equipamento para ver os testes.</li>
+      </ul>
+    </div>
+    <button onclick="generateReport()">Exportar Laudo</button>
+  </main>
+  <footer>
+    &copy; 2025 - Assistência Técnica
+  </footer>
+
+  <script>
+    const equipmentTests = {
+      datalogger: [
+        "Bateria",         
+        "Interface",
+        "Comunicação com o software de operação",
+        "Comunicação com a sonda",
+        "Geração de registro de medição",
+        "Estado geral da carcaça",
+        "Inspeção visual do sensor de umidade",
+        "Medições coerentes (simples comparação)"
+      ],
+      oleo: [
+        "Pilhas",								
+        "Display",								
+        "Teclas",							
+        "LED's",								
+        "Estado geral da carcaça",								
+        "Medição > 200°C",								
+        "Offset > 10%TPM",								
+        "Medições coerentes (óleo de referência)"
+      ],
+      analisador310: [
+
+      /* Testo 310 */
+        "Medição de oxigênio (O2)",								
+        "Medição de monóxido de carbono (CO)",								
+        "Medição de temperatura (FT, AT)",								
+        "Medição de pressão (Δp, draught)",								
+        "Sucção da bomba",								
+        "Filtros e anéis de vedação",								
+        "Estado geral da carcaça",								
+        "Display, teclas",								
+        "Carregador / bateria",								
+        "Impressora"
+      ],
+
+
+      analisador340:
+      [ 
+        /* testo 340 */
+        " Teste 1",
+        " Teste 2",
+        " Teste 3"
+
+      ]
+    };
+
+    document.getElementById("equipment").addEventListener("change", function () {
+      const selected = this.value;
+      const testList = document.getElementById("test-list");
+      testList.innerHTML = "";
+
+      if (selected && equipmentTests[selected]) {
+        equipmentTests[selected].forEach((test, index) => {
+          const li = document.createElement("li");
+          li.style.display = "flex";
+          li.style.alignItems = "center";
+
+          const label = document.createElement("span");
+          label.textContent = test;
+          label.style.marginRight = "10px";
+          li.appendChild(label);
+
+          ["OK", "NotOK", "N/A"].forEach((option) => {
+            const radioContainer = document.createElement("label");
+            radioContainer.style.marginLeft = "1px";
+            radioContainer.style.display = "flex";
+            radioContainer.style.alignItems = "center";
+
+            const radio = document.createElement("input");
+            radio.type = "radio";
+            radio.name = `test-${index}`;
+            radio.value = option;
+            radio.style.marginRight = "5px";
+
+            const span = document.createElement("span");
+            span.textContent = option;
+            radioContainer.appendChild(radio);
+            radioContainer.appendChild(span);
+            li.appendChild(radioContainer);
+          });
+
+          testList.appendChild(li);
+        });
+      } else {
+        const li = document.createElement("li");
+        li.textContent = "Selecione um equipamento para ver os testes.";
+        testList.appendChild(li);
+      }
+    });
+      // Função para criar o arquivo em PDF
+
+      
+    function generateReport() {
+      const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Cabeçalho
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(16);
+    doc.text("Laudo Técnico", 105, 20, { align: "center" });
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(11);
+    doc.text("Assistência Técnica - 2025", 105, 28, { align: "center" });
+    doc.line(20, 32, 190, 32);
+
+    // Equipamento selecionado
+    const equipmentSelect = document.getElementById("equipment");
+    const selectedEquipment = equipmentSelect.options[equipmentSelect.selectedIndex].text || "Não selecionado";
+
+    doc.setFont("helvetica", "bold");
+    doc.text("Modelo do Equipamento:", 20, 45);
+    doc.setFont("helvetica", "normal");
+    doc.text(selectedEquipment, 80, 45);
+
+    // Monta tabela de testes
+    const rows = [];
+    const testList = document.querySelectorAll("#test-list li");
+
+    testList.forEach((li, index) => {
+      const testName = li.querySelector("span") ? li.querySelector("span").textContent : li.textContent;
+      const radios = li.querySelectorAll("input[type=radio]");
+      let result = "";
+      radios.forEach(r => {
+        if (r.checked) result = r.value;
+      });
+      rows.push([index + 1, testName, result || "Não marcado"]);
+    });
+
+    doc.autoTable({
+      startY: 55,
+      head: [["#", "Teste", "Resultado"]],
+      body: rows,
+      styles: { fontSize: 10 },
+      headStyles: { fillColor: [0, 120, 215] }
+    });
+
+    // Rodapé
+    const pageHeight = doc.internal.pageSize.height;
+    doc.setFontSize(9);
+    doc.setTextColor(100);
+    doc.text("© 2025 - Assistência Técnica", 105, pageHeight - 10, { align: "center" });
+
+    // Salva
+    doc.save("laudo.pdf");
+  }
+    
+    
+ 
+
+
+    </script>
+  
+  
+</body>
+</html>
